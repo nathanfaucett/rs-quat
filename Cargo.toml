@@ -1,0 +1,10 @@
+[package]
+name = "quat"
+version = "0.1.0"
+authors = ["nathanfaucett <nathanfaucett@gmail.com>"]
+
+[dependencies.num]
+git = "https://github.com/nathanfaucett/rs-num.git"
+
+[dependencies.vec4]
+git = "https://github.com/nathanfaucett/rs-vec4.git"
