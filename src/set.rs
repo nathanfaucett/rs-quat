@@ -15,3 +15,8 @@ fn test_set() {
     set(&mut v, 1, 2, 3, 4);
     assert!(v == [1, 2, 3, 4]);
 }
+
+#[inline(always)]
+pub fn zero<T: Num>(out: &mut [T; 4]) -> &mut [T; 4] { set(out, T::zero(), T::zero(), T::zero(), T::zero()) }
+#[inline(always)]
+pub fn identity<T: Num>(out: &mut [T; 4]) -> &mut [T; 4] { set(out, T::zero(), T::zero(), T::zero(), T::one()) }
