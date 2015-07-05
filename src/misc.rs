@@ -1,5 +1,5 @@
 use num::Num;
-use create::copy;
+use create::clone;
 use length::{normalize, dot};
 
 #[inline(always)]
@@ -73,7 +73,7 @@ fn test_lerp() {
 
 #[inline(always)]
 pub fn nlerp<T: Num>(out: &mut [T; 4], a: [T; 4], b: [T; 4], t: T) -> &mut [T; 4] {
-    let v = copy(*lerp(out, a, b, t));
+    let v = clone(*lerp(out, a, b, t));
     normalize(out, v)
 }
 

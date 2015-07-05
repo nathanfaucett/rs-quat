@@ -3,6 +3,9 @@ extern crate num;
 pub mod create;
 pub use create::*;
 
+pub mod set;
+pub use set::*;
+
 pub mod mul;
 pub use mul::*;
 
