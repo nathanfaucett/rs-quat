@@ -3,6 +3,14 @@ name = "quat"
 version = "0.1.0"
 authors = ["nathanfaucett <nathanfaucett@gmail.com>"]
 
+keywords = ["quat", "quaternion"]
+description = "rust quaternion functions"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/nathanfaucett/rs-quat.git"
+homepage = "https://github.com/nathanfaucett/rs-quat"
+
+
 [dependencies.num]
 git = "https://github.com/nathanfaucett/rs-num.git"
 
