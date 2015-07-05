@@ -1,4 +1,5 @@
 use num::Num;
+use create::{clone, create};
 
 
 #[inline(always)]
@@ -72,9 +73,11 @@ pub fn rotate_z<T: Num>(out: &mut [T; 4], a: [T; 4], angle: T) -> &mut [T; 4] {
 
 #[inline(always)]
 pub fn rotate<T: Num>(out: &mut [T; 4], a: [T; 4], x: T, y: T, z: T) -> &mut [T; 4] {
-    rotate_z(out, a, z);
-    rotate_x(out, a, x);
-    rotate_y(out, a, y);
+    let mut tmp_a = clone(a);
+    let mut tmp_b = create(T::zero(), T::zero(), T::zero(), T::one());
+    rotate_z(&mut tmp_a, a, z);
+    rotate_x(&mut tmp_b, tmp_a, x);
+    rotate_y(out, tmp_b, y);
     out
 }
 
