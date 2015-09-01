@@ -89,10 +89,10 @@ pub fn slerp<T: Num>(out: &mut [T; 4], a: [T; 4], b: [T; 4], t: T) -> &mut [T; 4
     let mut bw = b[3];
 
     let mut cosom = ax * bx + ay * by + az * bz + aw * bw;
-    let mut omega;
     let mut sinom;
-    let mut scale0;
-    let mut scale1;
+    let omega;
+    let scale0;
+    let scale1;
 
     if cosom < T::zero() {
         cosom = -cosom;
