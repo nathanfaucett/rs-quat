@@ -2,25 +2,26 @@
 
 
 extern crate num;
+extern crate vec4;
 
 
-mod create;
+pub mod create;
 pub use create::*;
 
-mod set;
+pub mod set;
 pub use set::*;
 
-mod mul;
+pub mod mul;
 pub use mul::*;
 
-mod div;
+pub mod div;
 pub use div::*;
 
-mod length;
+pub mod length;
 pub use length::*;
 
-mod misc;
+pub mod misc;
 pub use misc::*;
 
-mod transform;
+pub mod transform;
 pub use transform::*;
