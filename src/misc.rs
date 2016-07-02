@@ -11,7 +11,7 @@ pub use vec4::clamp;
 
 
 #[inline(always)]
-pub fn conjugate<T: Num>(out: &mut [T; 4], a: [T; 4]) -> &mut [T; 4] {
+pub fn conjugate<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4]) -> &'a mut [T; 4] {
     out[0] = -a[0];
     out[1] = -a[1];
     out[2] = -a[2];
@@ -21,7 +21,7 @@ pub fn conjugate<T: Num>(out: &mut [T; 4], a: [T; 4]) -> &mut [T; 4] {
 #[test]
 fn test_conjugate() {
     let mut v = [0, 0, 0, 0];
-    conjugate(&mut v, [1, 1, 1, 1]);
+    conjugate(&mut v, &[1, 1, 1, 1]);
     assert!(v[0] == -1);
     assert!(v[1] == -1);
     assert!(v[2] == -1);
@@ -29,7 +29,7 @@ fn test_conjugate() {
 }
 
 #[inline(always)]
-pub fn calculate_w<T: Num>(out: &mut [T; 4], a: [T; 4]) -> &mut [T; 4] {
+pub fn calculate_w<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4]) -> &'a mut [T; 4] {
     out[0] = a[0];
     out[1] = a[1];
     out[2] = a[2];
@@ -38,13 +38,13 @@ pub fn calculate_w<T: Num>(out: &mut [T; 4], a: [T; 4]) -> &mut [T; 4] {
 }
 
 #[inline(always)]
-pub fn nlerp<T: Num>(out: &mut [T; 4], a: [T; 4], b: [T; 4], t: T) -> &mut [T; 4] {
-    let v = clone(*lerp(out, a, b, t));
-    normalize(out, v)
+pub fn nlerp<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: T) -> &'a mut [T; 4] {
+    let tmp = clone(lerp(out, a, b, t));
+    normalize(out, &tmp)
 }
 
 #[inline(always)]
-pub fn slerp<T: Num>(out: &mut [T; 4], a: [T; 4], b: [T; 4], t: T) -> &mut [T; 4] {
+pub fn slerp<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: T) -> &'a mut [T; 4] {
     let ax = a[0];
     let ay = a[1];
     let az = a[2];
