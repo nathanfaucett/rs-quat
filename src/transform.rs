@@ -82,7 +82,7 @@ pub fn rotate<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], x: T, y: T, z:
 }
 
 #[inline(always)]
-pub fn look_rotation<'a, 'b, T: Num>(out: &'a mut [T; 4], forward: [T; 3], up: [T; 3]) -> &'a mut [T; 4] {
+pub fn look_rotation<'a, 'b, T: Num>(out: &'a mut [T; 4], forward: &'b [T; 3], up: &'b [T; 3]) -> &'a mut [T; 4] {
     let fx = forward[0];
     let fy = forward[1];
     let fz = forward[2];
@@ -106,7 +106,7 @@ pub fn look_rotation<'a, 'b, T: Num>(out: &'a mut [T; 4], forward: [T; 3], up: [
 }
 
 #[inline(always)]
-pub fn from_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 4], axis: [T; 3], angle: T) -> &'a mut [T; 4] {
+pub fn from_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 4], axis: &'b [T; 3], angle: T) -> &'a mut [T; 4] {
     let half_angle = angle / T::from_isize(2isize);
     let s = half_angle.sin();
 
@@ -172,7 +172,7 @@ pub fn from_mat2<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 4]) -> &'a mut 
 }
 
 #[inline(always)]
-pub fn from_mat32<'a, 'b, T: Num>(out: &'a mut [T; 4], m: [T; 6]) -> &'a mut [T; 4] {
+pub fn from_mat32<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 6]) -> &'a mut [T; 4] {
     from_mat(
         out,
         m[0], m[2], T::zero(),
@@ -182,7 +182,7 @@ pub fn from_mat32<'a, 'b, T: Num>(out: &'a mut [T; 4], m: [T; 6]) -> &'a mut [T;
 }
 
 #[inline(always)]
-pub fn from_mat3<'a, 'b, T: Num>(out: &'a mut [T; 4], m: [T; 9]) -> &'a mut [T; 4] {
+pub fn from_mat3<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 9]) -> &'a mut [T; 4] {
     from_mat(
         out,
         m[0], m[3], m[6],
@@ -192,7 +192,7 @@ pub fn from_mat3<'a, 'b, T: Num>(out: &'a mut [T; 4], m: [T; 9]) -> &'a mut [T; 
 }
 
 #[inline(always)]
-pub fn from_mat4<'a, 'b, T: Num>(out: &'a mut [T; 4], m: [T; 16]) -> &'a mut [T; 4] {
+pub fn from_mat4<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 16]) -> &'a mut [T; 4] {
     from_mat(
         out,
         m[0], m[4], m[8],
