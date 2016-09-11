@@ -38,21 +38,22 @@ pub fn calculate_w<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4]) -> &'a mu
 }
 
 #[inline(always)]
-pub fn nlerp<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: T) -> &'a mut [T; 4] {
+pub fn nlerp<'a, 'b, T: Num, N: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: N) -> &'a mut [T; 4] {
     let tmp = clone(lerp(out, a, b, t));
     normalize(out, &tmp)
 }
 
 #[inline(always)]
-pub fn slerp<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: T) -> &'a mut [T; 4] {
-    let ax = a[0];
-    let ay = a[1];
-    let az = a[2];
-    let aw = a[3];
-    let mut bx = b[0];
-    let mut by = b[1];
-    let mut bz = b[2];
-    let mut bw = b[3];
+pub fn slerp<'a, 'b, T: Num, N: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: N) -> &'a mut [T; 4] {
+    let t_f64 = t.to_f64();
+    let ax = a[0].to_f64();
+    let ay = a[1].to_f64();
+    let az = a[2].to_f64();
+    let aw = a[3].to_f64();
+    let mut bx = b[0].to_f64();
+    let mut by = b[1].to_f64();
+    let mut bz = b[2].to_f64();
+    let mut bw = b[3].to_f64();
 
     let mut cosom = ax * bx + ay * by + az * bz + aw * bw;
     let mut sinom;
@@ -60,7 +61,7 @@ pub fn slerp<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], 
     let scale0;
     let scale1;
 
-    if cosom < T::zero() {
+    if cosom < 0_f64 {
         cosom = -cosom;
         bx = -bx;
         by = -by;
@@ -68,22 +69,23 @@ pub fn slerp<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], 
         bw = -bw;
     }
 
-    if T::one() - cosom > T::zero() {
+    if 1_f64 - cosom > 0_f64 {
         omega = cosom.acos();
 
         sinom = omega.sin();
-        sinom = if sinom != T::zero() {T::one() / sinom} else {sinom};
+        sinom = if sinom != 0_f64 {1_f64 / sinom} else {sinom};
 
-        scale0 = ((T::one() - t) * omega).sin() * sinom;
-        scale1 = (t * omega).sin() * sinom;
+        scale0 = ((1_f64 - t_f64) * omega).sin() * sinom;
+        scale1 = (t_f64 * omega).sin() * sinom;
     } else {
-        scale0 = T::one() - t;
-        scale1 = t;
+        scale0 = 1_f64 - t_f64;
+        scale1 = t_f64;
     }
 
-    out[0] = scale0 * ax + scale1 * bx;
-    out[1] = scale0 * ay + scale1 * by;
-    out[2] = scale0 * az + scale1 * bz;
-    out[3] = scale0 * aw + scale1 * bw;
+    out[0] = T::from_f64(scale0 * ax + scale1 * bx);
+    out[1] = T::from_f64(scale0 * ay + scale1 * by);
+    out[2] = T::from_f64(scale0 * az + scale1 * bz);
+    out[3] = T::from_f64(scale0 * aw + scale1 * bw);
+
     out
 }
