@@ -118,6 +118,24 @@ pub fn from_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 4], axis: &'b [T; 3], an
 }
 
 #[inline(always)]
+pub fn get_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 3], q: &'b [T; 4]) -> T {
+    let angle = q[3].acos() * T::from_usize(2);
+    let s = angle.sin() / T::from_usize(2);
+
+    if s != T::zero() {
+        out[0] = q[0] / s;
+        out[1] = q[1] / s;
+        out[2] = q[2] / s;
+    } else {
+        out[0] = T::zero();
+        out[1] = T::zero();
+        out[2] = T::one();
+    }
+
+    return angle;
+}
+
+#[inline(always)]
 pub fn from_mat<'a, 'b, T: Num>(
     out: &'a mut [T; 4],
     m11: T, m12: T, m13: T,
