@@ -1,27 +1,27 @@
-use num::Num;
+use num::{Signed, Unsigned};
 use create::{clone, create};
 
 
 #[inline(always)]
-pub fn rotation_x<'a, 'b, T: Num>(out: &'b [T; 4]) -> T {
+pub fn rotation_x<'a, 'b, T: Unsigned>(out: &'b [T; 4]) -> T {
     (T::from_isize(2isize) * out[0] * out[3] + T::from_isize(2isize) * out[1] * out[2])
         .atan2(T::one() - T::from_isize(2isize) * (out[2] * out[2] + out[3] * out[3]))
 }
 
 #[inline(always)]
-pub fn rotation_y<'a, 'b, T: Num>(out: &'b [T; 4]) -> T {
+pub fn rotation_y<'a, 'b, T: Signed>(out: &'b [T; 4]) -> T {
     let theta = T::from_isize(2isize) * (out[0] * out[2] + out[3] * out[1]);
     (if theta < -T::one() {-T::one()} else if theta > T::one() {T::one()} else {theta}).asin()
 }
 
 #[inline(always)]
-pub fn rotation_z<'a, 'b, T: Num>(out: &'b [T; 4]) -> T {
+pub fn rotation_z<'a, 'b, T: Unsigned>(out: &'b [T; 4]) -> T {
     (T::from_isize(2isize) * out[0] * out[1] + T::from_isize(2isize) * out[2] * out[3])
         .atan2(T::one() - T::from_isize(2isize) * (out[1] * out[1] + out[2] * out[2]))
 }
 
 #[inline(always)]
-pub fn rotate_x<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) -> &'a mut [T; 4] {
+pub fn rotate_x<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) -> &'a mut [T; 4] {
     let ax = a[0];
     let ay = a[1];
     let az = a[2];
@@ -38,7 +38,7 @@ pub fn rotate_x<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) ->
 }
 
 #[inline(always)]
-pub fn rotate_y<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) -> &'a mut [T; 4] {
+pub fn rotate_y<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) -> &'a mut [T; 4] {
     let ax = a[0];
     let ay = a[1];
     let az = a[2];
@@ -55,7 +55,7 @@ pub fn rotate_y<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) ->
 }
 
 #[inline(always)]
-pub fn rotate_z<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) -> &'a mut [T; 4] {
+pub fn rotate_z<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) -> &'a mut [T; 4] {
     let ax = a[0];
     let ay = a[1];
     let az = a[2];
@@ -72,7 +72,7 @@ pub fn rotate_z<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], angle: T) ->
 }
 
 #[inline(always)]
-pub fn rotate<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], x: T, y: T, z: T) -> &'a mut [T; 4] {
+pub fn rotate<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], a: &'b [T; 4], x: T, y: T, z: T) -> &'a mut [T; 4] {
     let mut tmp_a = clone(a);
     let mut tmp_b = create(T::zero(), T::zero(), T::zero(), T::one());
     rotate_z(&mut tmp_a, &a, z);
@@ -82,7 +82,7 @@ pub fn rotate<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4], x: T, y: T, z:
 }
 
 #[inline(always)]
-pub fn look_rotation<'a, 'b, T: Num>(out: &'a mut [T; 4], forward: &'b [T; 3], up: &'b [T; 3]) -> &'a mut [T; 4] {
+pub fn look_rotation<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], forward: &'b [T; 3], up: &'b [T; 3]) -> &'a mut [T; 4] {
     let fx = forward[0];
     let fy = forward[1];
     let fz = forward[2];
@@ -106,7 +106,7 @@ pub fn look_rotation<'a, 'b, T: Num>(out: &'a mut [T; 4], forward: &'b [T; 3], u
 }
 
 #[inline(always)]
-pub fn from_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 4], axis: &'b [T; 3], angle: T) -> &'a mut [T; 4] {
+pub fn from_axis_angle<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], axis: &'b [T; 3], angle: T) -> &'a mut [T; 4] {
     let half_angle = angle / T::from_isize(2isize);
     let s = half_angle.sin();
 
@@ -118,7 +118,7 @@ pub fn from_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 4], axis: &'b [T; 3], an
 }
 
 #[inline(always)]
-pub fn get_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 3], q: &'b [T; 4]) -> T {
+pub fn get_axis_angle<'a, 'b, T: Unsigned>(out: &'a mut [T; 3], q: &'b [T; 4]) -> T {
     let angle = q[3].acos() * T::from_usize(2);
     let s = angle.sin() / T::from_usize(2);
 
@@ -136,7 +136,7 @@ pub fn get_axis_angle<'a, 'b, T: Num>(out: &'a mut [T; 3], q: &'b [T; 4]) -> T {
 }
 
 #[inline(always)]
-pub fn from_mat<'a, 'b, T: Num>(
+pub fn from_mat<'a, 'b, T: Unsigned>(
     out: &'a mut [T; 4],
     m11: T, m12: T, m13: T,
     m21: T, m22: T, m23: T,
@@ -180,7 +180,7 @@ pub fn from_mat<'a, 'b, T: Num>(
 }
 
 #[inline(always)]
-pub fn from_mat2<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 4]) -> &'a mut [T; 4] {
+pub fn from_mat2<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], m: &'b [T; 4]) -> &'a mut [T; 4] {
     from_mat(
         out,
         m[0], m[2], T::zero(),
@@ -190,7 +190,7 @@ pub fn from_mat2<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 4]) -> &'a mut 
 }
 
 #[inline(always)]
-pub fn from_mat32<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 6]) -> &'a mut [T; 4] {
+pub fn from_mat32<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], m: &'b [T; 6]) -> &'a mut [T; 4] {
     from_mat(
         out,
         m[0], m[2], T::zero(),
@@ -200,7 +200,7 @@ pub fn from_mat32<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 6]) -> &'a mut
 }
 
 #[inline(always)]
-pub fn from_mat3<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 9]) -> &'a mut [T; 4] {
+pub fn from_mat3<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], m: &'b [T; 9]) -> &'a mut [T; 4] {
     from_mat(
         out,
         m[0], m[3], m[6],
@@ -210,7 +210,7 @@ pub fn from_mat3<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 9]) -> &'a mut 
 }
 
 #[inline(always)]
-pub fn from_mat4<'a, 'b, T: Num>(out: &'a mut [T; 4], m: &'b [T; 16]) -> &'a mut [T; 4] {
+pub fn from_mat4<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], m: &'b [T; 16]) -> &'a mut [T; 4] {
     from_mat(
         out,
         m[0], m[4], m[8],
