@@ -1,4 +1,5 @@
-use num::{Signed, Unsigned};
+use num::Num;
+use signed::Signed;
 use create::clone;
 use length::normalize;
 
@@ -12,7 +13,7 @@ pub use vec4::eq;
 pub use vec4::ne;
 
 
-#[inline(always)]
+#[inline]
 pub fn conjugate<'a, 'b, T: Signed>(out: &'a mut [T; 4], a: &'b [T; 4]) -> &'a mut [T; 4] {
     out[0] = -a[0];
     out[1] = -a[1];
@@ -30,8 +31,8 @@ fn test_conjugate() {
     assert!(v[3] == 1);
 }
 
-#[inline(always)]
-pub fn calculate_w<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], a: &'b [T; 4]) -> &'a mut [T; 4] {
+#[inline]
+pub fn calculate_w<'a, 'b, T: Num>(out: &'a mut [T; 4], a: &'b [T; 4]) -> &'a mut [T; 4] {
     out[0] = a[0];
     out[1] = a[1];
     out[2] = a[2];
@@ -39,13 +40,13 @@ pub fn calculate_w<'a, 'b, T: Unsigned>(out: &'a mut [T; 4], a: &'b [T; 4]) -> &
     out
 }
 
-#[inline(always)]
-pub fn nlerp<'a, 'b, T: Unsigned, N: Unsigned>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: N) -> &'a mut [T; 4] {
+#[inline]
+pub fn nlerp<'a, 'b, T: Num, N: Num>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: N) -> &'a mut [T; 4] {
     let tmp = clone(lerp(out, a, b, t));
     normalize(out, &tmp)
 }
 
-#[inline(always)]
+#[inline]
 pub fn slerp<'a, 'b, T: Signed, N: Signed>(out: &'a mut [T; 4], a: &'b [T; 4], b: &'b [T; 4], t: N) -> &'a mut [T; 4] {
     let t_f64 = t.to_f64();
     let ax = a[0].to_f64();
