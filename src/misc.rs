@@ -2,6 +2,7 @@ use num::Num;
 use signed::Signed;
 use create::clone;
 use length::normalize;
+use trig::Trig;
 
 
 pub use vec4::inverse;

@@ -13,4 +13,5 @@ homepage = "https://github.com/nathanfaucett/rs-quat"
 [dependencies]
 num = { git = "https://github.com/nathanfaucett/rs-num.git" }
 signed = { git = "https://github.com/nathanfaucett/rs-signed.git" }
+trig = { git = "https://github.com/nathanfaucett/rs-trig.git" }
 vec4 = { git = "https://github.com/nathanfaucett/rs-vec4.git" }

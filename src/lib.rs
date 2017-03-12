@@ -4,6 +4,7 @@
 extern crate num;
 extern crate signed;
 extern crate vec4;
+extern crate trig;
 
 
 pub mod create;
